@@ -1,0 +1,113 @@
+**************************************************************************************
+*#Step 2.Read in industry tagged names for funding agencies*********************************
+*#Source: Industry_tagging/Outputs
+clear
+import delimited "G:\My Drive\Nutrition_BiasInScience\WebOfScience\Industry_Tagging\Outputs\wos_indtagged_final_wide.csv", delimiters(",") varnames(1)
+
+keep if foodname == "TI = (oats or oatmeal)"
+
+*#Step3.Merge in MTurk Oats file" cleaned in 1.DataManipulation.do*********************************
+gen AB_clean = ustrregexra(ab,`"[^a-zA-Z0-9]"',"")
+gen AB_trunc = substr(AB_clean, 1,200)
+sort AB_trunc
+*There should be NO _merge=2
+merge m:1 AB_trunc using "G:\My Drive\Nutrition_BiasInScience\WebOfScience\1.Oats\Batch_3892571_batch_results_reshaped"
+keep if _merge==3
+
+*Industry-funded or not?*********************************
+gen ind_code = 1 if companies ~=""
+replace ind_code = 0 if ind_code == .
+
+*Ratings across 5 MTurk workers*********************************
+forvalues i = 1(1)5 {
+ gen positive`i' = (rating`i'==1)
+ }
+ forvalues i = 1(1)5 {
+ gen unrelated`i' = (rating`i'==99|rating`i'==0)
+ }
+ forvalues i = 1(1)5 {
+ gen negative`i' = (rating`i'==-1)
+ }
+ 
+ *Average ratings, -1, 0, 1: treating unrelated as 1) 0 or 2) missing
+ forvalues i = 1(1)5 {
+ gen rating`i'_unrelated0 = rating`i'*( rating`i'==1 | rating`i'==0 | rating`i'==-1) + 0 *(rating`i'==99)
+ }
+ forvalues i = 1(1)5 {
+ gen rating`i'_unrelatedmissing = rating`i'*( rating`i'==1 | rating`i'==0 | rating`i'==-1) 
+ replace rating`i'_unrelatedmissing = . if rating`i'==99
+ }
+ 
+egen avg_unrelated0 = rmean(rating1_unrelated0 rating2_unrelated0  rating3_unrelated0 rating4_unrelated0 rating5_unrelated0)
+egen avg_unrelatedmissing = rmean(rating1_unrelatedmissing rating2_unrelatedmissing  rating3_unrelatedmissing rating4_unrelatedmissing rating5_unrelatedmissing)
+egen majority = rsum(positive1 positive2  positive3 positive4 positive5)
+gen majority_2 = majority>=2
+gen majority_3 = majority>=3
+
+egen majority_unrelated = rsum(unrelated1 unrelated2 unrelated3 unrelated4 unrelated5)
+egen majority_negative = rsum(negative1 negative2 negative3 negative4 negative5)
+
+*Regressions: Rating~ Industry*********************************
+reg majority_3 ind if !missing(ab)
+reg majority_3 ind if !missing(ab) & (majority_negative>1 | majority>2)
+reg avg_unrelated0 ind_code if !missing(ab)
+reg avg_unrelatedmissing  ind_code if !missing(ab)
+
+
+**************************************************************************************
+*#Statistics for Oats***********************************************
+*#Input in G:\My Drive\Nutrition_BiasInScience\Findings Stats\Oats Stats.xlsx
+#Industry Concentration: ind vs non-ind
+tab ind_code
+tab ind_code if !missing(ab)
+
+tab companies
+
+#Number of positive vs non-positive articles by various sub-groups
+tab positive1 if !missing(ab)
+tab positive1 if !missing(ab) & ind_code==1
+
+tab majority_2 if !missing(ab)
+tab majority_2 if !missing(ab) & ind_code==1
+
+summ avg if !missing(ab), detail
+summ avg if !missing(ab) & ind_code==1, detail
+
+
+**************************************************************************************
+*********NEWS PAPER MENTIONS VS CITATIONS FOR OATS********
+**************************************************************************************
+xls2dta, save("G:\My Drive\Nutrition_BiasInScience\WebOfScience\Factiva_Data"): import excel "G:\My Drive\Nutrition_BiasInScience\WebOfScience\Factiva_Data\13.xlsx", sheet("Sheet1") firstrow clear
+xls2dta: xeq rename search_terms ti
+xls2dta: xeq rename number_of_results news_mentions
+xls2dta: xeq bysort ti: keep if _n==1
+
+drop _merge
+merge m:1 ti using "G:\My Drive\Nutrition_BiasInScience\WebOfScience\Factiva_Data\13"
+list ti if _merge==1
+list ti if _merge==2
+drop if _merge==2
+drop _merge
+
+
+*drop if news_mentions>50 & news_mentions~=.
+*Exclude outlier news mentions, happens with books or titles like "Oat"
+*Exclude those with missing abstracts, to be consistent with positive/negative analysis
+ttest news_mentions if !missing(ab) & !(news_mentions>50 & news_mentions~=.), by(ind_code)
+ttest news_mentions if !(news_mentions>50 & news_mentions~=.), by(ind_code)
+
+*0-1 coding to see if it gets a news mention or not, not the intensity of it
+gen news_mentions_01 = (news_mentions>0 & news_mentions~=. & news_mentions<=50)
+reg news_mentions_01 ind_code
+reg news_mentions_01 ind_code if !missing(ab) &  !(news_mentions>50 & news_mentions~=.)
+
+reg news_mentions ind_code if !missing(ab) &  !(news_mentions>50 & news_mentions~=.)
+
+
+**************************************************************************************
+*********CHECK: WHAT HAPPENS IF WE DO 100% IND, 10% NON-IND SAMPLE********
+**************************************************************************************
+
+bysort ind_code: gen r1 = runiform()  if ind_code == 0 & !missing(ab)
+reg avg ind_code if (ind_code==1 | r1<=0.1) & !missing(ab)
+reg majority_3  ind_code if (ind_code==1 | r1<=0.1) & !missing(ab)
