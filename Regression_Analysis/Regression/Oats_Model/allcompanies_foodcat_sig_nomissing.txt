@@ -1,0 +1,4 @@
+"Food.Code25:Is_Industry1"
+"Food.Code33:Is_Industry1"
+"Food.Code81:Is_Industry1"
+"Food.Code105:Is_Industry1"

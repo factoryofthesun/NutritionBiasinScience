@@ -1,0 +1,45 @@
+"","SC","Count_Total","Count_Unrelated_80Perc","Perc_Unrelated_80Perc","Count_Unrelated_All","Perc_Unrelated_All"
+"1","Endocrinology & Metabolism; Nutrition & Dietetics",10,0,0,0,0
+"2","Genetics & Heredity; Nutrition & Dietetics",2,0,0,0,0
+"3","Nutrition & Dietetics; Pharmacology & Pharmacy",3,0,0,0,0
+"4","Behavioral Sciences; Nutrition & Dietetics",6,0,0,0,0
+"5","Nutrition & Dietetics; Sport Sciences",2,0,0,0,0
+"6","Nutrition & Dietetics; Physiology; Sport Sciences",1,0,0,0,0
+"7","Nutrition & Dietetics; Pediatrics",3,0,0,0,0
+"8","Gastroenterology & Hepatology; Nutrition & Dietetics; Pediatrics",1,0,0,0,0
+"9","Neurosciences & Neurology; Nutrition & Dietetics",1,0,0,0,0
+"10","Agriculture; Food Science & Technology; Science & Technology - Other Topics",1,0,0,0,0
+"11","Education & Educational Research; Nutrition & Dietetics",1,0,0,0,0
+"12","Nutrition & Dietetics",319,12,0.0376175548589342,7,0.0219435736677116
+"13","Biochemistry & Molecular Biology; Nutrition & Dietetics",18,2,0.111111111111111,2,0.111111111111111
+"14","Nutrition & Dietetics; Oncology",8,1,0.125,0,0
+"15","Food Science & Technology; Nutrition & Dietetics; Pharmacology & Pharmacy",12,2,0.166666666666667,0,0
+"16","Nutrition & Dietetics; Public, Environmental & Occupational Health",5,1,0.2,1,0.2
+"17","Biochemistry & Molecular Biology; Food Science & Technology",55,13,0.236363636363636,6,0.109090909090909
+"18","Food Science & Technology; Nutrition & Dietetics",104,25,0.240384615384615,13,0.125
+"19","Cardiovascular System & Cardiology; Endocrinology & Metabolism; Nutrition & Dietetics",4,1,0.25,0,0
+"20","Chemistry; Food Science & Technology; Nutrition & Dietetics; Plant Sciences",25,7,0.28,2,0.08
+"21","Chemistry; Food Science & Technology; Immunology; Toxicology",7,2,0.285714285714286,1,0.142857142857143
+"22","Food Science & Technology; Microscopy",3,1,0.333333333333333,1,0.333333333333333
+"23","Biochemistry & Molecular Biology; Food Science & Technology; Pharmacology & Pharmacy",6,3,0.5,1,0.166666666666667
+"24","Food Science & Technology; Microbiology",47,26,0.553191489361702,14,0.297872340425532
+"25","Food Science & Technology; Pharmacology & Pharmacy",9,5,0.555555555555556,4,0.444444444444444
+"26","Chemistry; Food Science & Technology; Toxicology",56,32,0.571428571428571,13,0.232142857142857
+"27","Food Science & Technology; Toxicology",52,30,0.576923076923077,18,0.346153846153846
+"28","Chemistry; Food Science & Technology; Nutrition & Dietetics",294,172,0.585034013605442,108,0.36734693877551
+"29","Agriculture; Chemistry; Food Science & Technology",600,359,0.598333333333333,236,0.393333333333333
+"30","Chemistry; Food Science & Technology",627,388,0.618819776714514,270,0.430622009569378
+"31","Food Science & Technology",1957,1223,0.624936126724578,786,0.401635155850792
+"32","Agriculture; Food Science & Technology",226,145,0.641592920353982,81,0.358407079646018
+"33","Food Science & Technology; Mycology; Toxicology",30,21,0.7,9,0.3
+"34","Biotechnology & Applied Microbiology; Food Science & Technology",114,83,0.728070175438597,53,0.464912280701754
+"35","Developmental Biology; Nutrition & Dietetics; Reproductive Biology; Zoology",4,3,0.75,2,0.5
+"36","Biotechnology & Applied Microbiology; Food Science & Technology; Microbiology",17,13,0.764705882352941,7,0.411764705882353
+"37","Biochemistry & Molecular Biology; Biotechnology & Applied Microbiology; Chemistry; Food Science & Technology",55,44,0.8,32,0.581818181818182
+"38","Engineering; Food Science & Technology",117,98,0.837606837606838,68,0.581196581196581
+"39","Biotechnology & Applied Microbiology; Engineering; Food Science & Technology",13,11,0.846153846153846,9,0.692307692307692
+"40","Agriculture; Business & Economics; Food Science & Technology; Nutrition & Dietetics",19,17,0.894736842105263,10,0.526315789473684
+"41","Chemistry; Food Science & Technology; Spectroscopy",8,8,1,6,0.75
+"42","Agriculture; Business & Economics; Food Science & Technology",5,5,1,5,1
+"43","Food Science & Technology; Public, Environmental & Occupational Health",1,1,1,0,0
+"44","Agriculture; Nutrition & Dietetics; Public, Environmental & Occupational Health",1,1,1,1,1

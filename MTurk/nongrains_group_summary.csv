@@ -1,0 +1,94 @@
+SC,Counts,Perc_Unrelated_80Perc,Perc_Unrelated_All,Inferred_Vals,Estimated_Unrelated
+Agriculture; Food Science & Technology; Science & Technology - Other Topics,1,0,0,FALSE,0
+Behavioral Sciences; Nutrition & Dietetics,103,0,0,FALSE,0
+Education & Educational Research; Nutrition & Dietetics,24,0,0,FALSE,0
+Endocrinology & Metabolism; Nutrition & Dietetics,222,0,0,FALSE,0
+Gastroenterology & Hepatology; Nutrition & Dietetics; Pediatrics,251,0,0,FALSE,0
+Genetics & Heredity; Nutrition & Dietetics,29,0,0,FALSE,0
+Neurosciences & Neurology; Nutrition & Dietetics,61,0,0,FALSE,0
+Nutrition & Dietetics; Pediatrics,70,0,0,FALSE,0
+Nutrition & Dietetics; Pharmacology & Pharmacy,58,0,0,FALSE,0
+Nutrition & Dietetics; Physiology; Sport Sciences,73,0,0,FALSE,0
+Nutrition & Dietetics; Sport Sciences,70,0,0,FALSE,0
+Nutrition & Dietetics,5766,0.037617555,0.021943574,FALSE,216.9028213
+Biochemistry & Molecular Biology; Nutrition & Dietetics,571,0.111111111,0.111111111,FALSE,63.44444444
+Nutrition & Dietetics; Oncology,278,0.125,0,FALSE,34.75
+Nutrition & Dietetics; Obstetrics & Gynecology; Pediatrics; Research & Experimental Medicine,5,0.144721234,0.086595492,TRUE,0.723606168
+Nutrition & Dietetics; Pediatrics; Research & Experimental Medicine,1,0.144721234,0.086595492,TRUE,0.144721234
+Nutrition & Dietetics; Physiology,8,0.144721234,0.086595492,TRUE,1.15776987
+Nutrition & Dietetics; Science & Technology - Other Topics,4,0.144721234,0.086595492,TRUE,0.578884935
+Behavioral Sciences; Food Science & Technology; Neurosciences & Neurology; Physiology,21,0.153251121,0.098262332,TRUE,3.218273543
+Food Science & Technology; Nutrition & Dietetics; Pharmacology & Pharmacy,372,0.166666667,0,FALSE,62
+Endocrinology & Metabolism; Food Science & Technology; Neurosciences & Neurology; Science & Technology - Other Topics,4,0.171108264,0.098262332,TRUE,0.684433056
+"Nutrition & Dietetics; Public, Environmental & Occupational Health",90,0.2,0.2,FALSE,18
+Nutrition & Dietetics; Oncology; Research & Experimental Medicine,1,0.207221234,0.086595492,TRUE,0.207221234
+Nutrition & Dietetics; Pharmacology & Pharmacy; Research & Experimental Medicine; Science & Technology - Other Topics,1,0.207591934,0.113285884,TRUE,0.207591934
+Biochemistry & Molecular Biology; Food Science & Technology,1150,0.236363636,0.109090909,FALSE,271.8181818
+Food Science & Technology; Nutrition & Dietetics,2509,0.240384615,0.125,FALSE,603.125
+Cardiovascular System & Cardiology; Endocrinology & Metabolism; Nutrition & Dietetics,61,0.25,0,FALSE,15.25
+Cardiovascular System & Cardiology; Nutrition & Dietetics,1,0.269721234,0.086595492,TRUE,0.269721234
+Biochemistry & Molecular Biology; Endocrinology & Metabolism; Nutrition & Dietetics,2,0.274519202,0.159720378,TRUE,0.549038404
+Chemistry; Food Science & Technology; Nutrition & Dietetics; Plant Sciences,485,0.28,0.08,FALSE,135.8
+Chemistry; Food Science & Technology; Immunology; Toxicology,182,0.285714286,0.142857143,FALSE,52
+Dermatology; Nutrition & Dietetics,2,0.289442467,0.173190985,TRUE,0.578884935
+General & Internal Medicine; Geriatrics & Gerontology; Nutrition & Dietetics,1,0.289442467,0.173190985,TRUE,0.289442467
+Geriatrics & Gerontology; Nutrition & Dietetics,28,0.289442467,0.173190985,TRUE,8.104389087
+Infectious Diseases; Nutrition & Dietetics,1,0.289442467,0.173190985,TRUE,0.289442467
+Nutrition & Dietetics; Obstetrics & Gynecology,32,0.289442467,0.173190985,TRUE,9.262158956
+Nutrition & Dietetics; Psychiatry; Psychology,1,0.289442467,0.173190985,TRUE,0.289442467
+Nutrition & Dietetics; Research & Experimental Medicine,1,0.289442467,0.173190985,TRUE,0.289442467
+Nutrition & Dietetics; Urology & Nephrology,13,0.289442467,0.173190985,TRUE,3.762752076
+Food Science & Technology; Neurosciences & Neurology,10,0.306502242,0.196524664,TRUE,3.065022422
+Food Science & Technology; Science & Technology - Other Topics,1,0.306502242,0.196524664,TRUE,0.306502242
+Food Science & Technology; Microscopy,33,0.333333333,0.333333333,FALSE,11
+"Health Care Sciences & Services; Nutrition & Dietetics; Public, Environmental & Occupational Health",2,0.359006948,0.229452635,TRUE,0.718013896
+Food Science & Technology; Immunology; Nutrition & Dietetics,2,0.396053746,0.236365818,TRUE,0.792107492
+Agriculture; Environmental Sciences & Ecology; Food Science & Technology; Science & Technology - Other Topics,1,0.410516362,0.261298133,TRUE,0.410516362
+Food Science & Technology; Plant Sciences,8,0.446502242,0.236524664,TRUE,3.572017937
+Chemistry; Nutrition & Dietetics,2,0.447352813,0.286356258,TRUE,0.894705625
+Microbiology; Nutrition & Dietetics,59,0.449408734,0.250657992,TRUE,26.51511529
+Biochemistry & Molecular Biology; Chemistry; Food Science & Technology; Oncology; Toxicology,1,0.478432221,0.276259926,TRUE,0.478432221
+"Chemistry; Food Science & Technology; Nutrition & Dietetics; Public, Environmental & Occupational Health; Research & Experimental Medicine",6,0.484070385,0.312869032,TRUE,2.904422307
+Biochemistry & Molecular Biology; Chemistry; Food Science & Technology; Nutrition & Dietetics; Research & Experimental Medicine,1,0.492599169,0.317932998,TRUE,0.492599169
+Biochemistry & Molecular Biology; Food Science & Technology; Pharmacology & Pharmacy,119,0.5,0.166666667,FALSE,59.5
+Agriculture; Food Science & Technology; Plant Sciences,7,0.503849695,0.287964799,TRUE,3.526947866
+Agriculture; Food Science & Technology; Nutrition & Dietetics,3,0.506997184,0.319028461,TRUE,1.520991553
+Food Science & Technology; Microbiology,1426,0.553191489,0.29787234,FALSE,788.8510638
+Food Science & Technology; Pharmacology & Pharmacy,323,0.555555556,0.444444444,FALSE,179.4444444
+Biochemistry & Molecular Biology; Chemistry; Food Science & Technology,4,0.56031807,0.366180336,TRUE,2.241272279
+Chemistry; Food Science & Technology; Toxicology,766,0.571428571,0.232142857,FALSE,437.7142857
+Food Science & Technology; Toxicology,679,0.576923077,0.346153846,FALSE,391.7307692
+Chemistry; Food Science & Technology; Nutrition & Dietetics,6740,0.585034014,0.367346939,FALSE,3943.129252
+Agriculture; Engineering; Environmental Sciences & Ecology; Food Science & Technology; Nutrition & Dietetics,4,0.589863273,0.387348269,TRUE,2.359453091
+Agriculture; Chemistry; Food Science & Technology,10816,0.598333333,0.393333333,FALSE,6471.573333
+Food Science & Technology; Research & Experimental Medicine; Toxicology,6,0.59960569,0.337903974,TRUE,3.597634143
+Agriculture; Chemistry; Food Science & Technology; Toxicology,1,0.605754785,0.366543637,TRUE,0.605754785
+Chemistry; Food Science & Technology; Research & Experimental Medicine,1,0.609133821,0.396285429,TRUE,0.609133821
+Environmental Sciences & Ecology; Food Science & Technology; Microbiology,2,0.611189742,0.360587164,TRUE,1.222379484
+Agriculture; Chemistry; Food Science & Technology; Veterinary Sciences,1,0.612270748,0.394471976,TRUE,0.612270748
+"Dentistry, Oral Surgery & Medicine; Food Science & Technology",1,0.613004484,0.393049327,TRUE,0.613004484
+Fisheries; Food Science & Technology,1,0.613004484,0.393049327,TRUE,0.613004484
+Food Science & Technology; Instruments & Instrumentation,2,0.613004484,0.393049327,TRUE,1.226008969
+Food Science & Technology; Life Sciences & Biomedicine - Other Topics,1,0.613004484,0.393049327,TRUE,0.613004484
+Food Science & Technology; Research & Experimental Medicine,4,0.613004484,0.393049327,TRUE,2.452017937
+Food Science & Technology; Social Sciences - Other Topics,1,0.613004484,0.393049327,TRUE,0.613004484
+Agriculture; Entomology; Food Science & Technology,3,0.615774543,0.391947199,TRUE,1.847323628
+Chemistry; Food Science & Technology,4466,0.618819777,0.43062201,FALSE,2763.649123
+Food Science & Technology,36909,0.624936127,0.401635156,FALSE,23065.7675
+Biochemistry & Molecular Biology; Chemistry; Engineering; Food Science & Technology,1,0.629853937,0.422712175,TRUE,0.629853937
+Agriculture; Food Science & Technology,16474,0.64159292,0.35840708,FALSE,10569.60177
+Food Science & Technology; Mycology,2,0.656502242,0.346524664,TRUE,1.313004484
+Agriculture; Biotechnology & Applied Microbiology; Food Science & Technology,411,0.663447685,0.430477362,TRUE,272.6769985
+Chemistry; Engineering; Food Science & Technology,2,0.685576394,0.461626184,TRUE,1.371152787
+Food Science & Technology; Mycology; Toxicology,48,0.7,0.3,FALSE,33.6
+Biotechnology & Applied Microbiology; Food Science & Technology,2732,0.728070175,0.464912281,FALSE,1989.087719
+Developmental Biology; Nutrition & Dietetics; Reproductive Biology; Zoology,58,0.75,0.5,FALSE,43.5
+Biotechnology & Applied Microbiology; Food Science & Technology; Microbiology,828,0.764705882,0.411764706,FALSE,633.1764706
+Biochemistry & Molecular Biology; Biotechnology & Applied Microbiology; Chemistry; Food Science & Technology,822,0.8,0.581818182,FALSE,657.6
+Engineering; Food Science & Technology,3239,0.837606838,0.581196581,FALSE,2713.008547
+Biotechnology & Applied Microbiology; Engineering; Food Science & Technology,394,0.846153846,0.692307692,FALSE,333.3846154
+Agriculture; Business & Economics; Food Science & Technology; Nutrition & Dietetics,105,0.894736842,0.526315789,FALSE,93.94736842
+Agriculture; Business & Economics; Food Science & Technology,86,1,1,FALSE,86
+Chemistry; Food Science & Technology; Spectroscopy,287,1,0.75,FALSE,287
+"Food Science & Technology; Public, Environmental & Occupational Health",6,1,0,FALSE,6
+Totals,100460,,,,57402.3776

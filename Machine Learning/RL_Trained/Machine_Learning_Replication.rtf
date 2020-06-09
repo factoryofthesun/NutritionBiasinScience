@@ -1,0 +1,91 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;\f2\fswiss\fcharset0 Helvetica-Oblique;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue233;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c93333;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ================================\
+Machine Learning Replication Procedure\
+================================\
+\
+Note: the following steps assume access to the GPU partition on the Mercury computing cluster \
+\
+Working directory: Machine Learning/RL_Trained\
+\
+Code Files: \
+   - Code/xlnet_grains_unrelated.py \
+   - Code/model_tag_sentiment_mercury.py\
+   - Code/Mercury/submit_xlnet_grains.sh\
+   - Code/Mercury/submit_ML_label.sh \
+\
+Data Files: \
+   - Data/mturk_train.csv (MTurk classified for oats abstracts)\
+   - Data/grains_formatted.csv (MTurk classified for grains abstracts)\
+   - Latest industry-tagged file (e.g. wos_indtagged_final.csv) \
+\
+1) Create appropriate folder structure in Mercury and upload code/data files \
+   - To run the training code without any adjustments, you will need to have the exact folder structure/file names in Mercury as below (names without file types are folders) \
+   - To upload files into Mercury, please see: {\field{\*\fldinst{HYPERLINK "https://hpc-docs.chicagobooth.edu/accessing.html"}}{\fldrslt 
+\f1 \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 https://hpc-docs.chicagobooth.edu/accessing.html}}\
+\
+Root (e.g. guanzhi0) \
+   |\'97Data \
+   |      |\'97mturk_train.csv\
+   |      |\'97grains_formatted.csv\
+   |      |\'97wos_indtagged_final_wide.csv\
+   |\'97Code\
+   |      |\'97xlnet_grains_unrelated.py\
+   |      |\'97model_tag_sentiment_mercury.py\
+   |      |\'97submit_xlnet_grains.sh\
+   |      |\'97submit_ML_label.sh\
+   |      |\'97Outputs \
+   |      |\'97models\
+   |\'97Plots\
+   |      |\'97 Grains\
+\
+   - File upload example using Mac Terminal\
+	scp Code/Mercury/submit_xlnet_final.sh guanzhi0@mercury.chicagobooth.edu:Code/.\
+\
+2) Submit ML training job to Mercury \
+Step by step from Mac Terminal:\
+	ssh <Your_Booth_ID>@mercury.chicagobooth.edu \
+	cd Code \
+	sbatch submit_xlnet_grains.sh \
+\
+To check on job status: \
+	sacct -j <job id>\
+\
+Outputs:\
+   - Outputs/slurm_grains_unrel.out (output of any system warnings/errors from code execution) \
+   - Outputs/grains_unrel.out (all print statements from code execution) \
+   - models/grains_originalAdamW_dp0.3_sdp0.1_bsize128.pt (trained model state dictionary - use this to load trained model)*\
+   - Plots/Grains/loss_<sampler name>.png (plot of training/validation loss)*\
+   - Plots/Grains/accuracy_<sampler name>.png (plot of training/validation accuracy)*\
+\
+* There will be 3 models created, but the grains_original is currently the best performing\
+\
+3) Submit sentiment tagging job to Mercury \
+Terminal command (once you\'92ve SSH\'92d into Mercury): batch submit_ML_label.sh\
+\
+Outputs: \
+   - Data/full_predictions_AdamW_grains.csv (main output file with sentiment predictions) \
+   - Outputs/slurm_label.out (output of system warnings/errors) \
+   - Outputs/ml_label.out (output of print statements from code) \
+\
+4) Copy predictions output file from Mercury back into local directory  \
+\
+================================\
+FAQs\
+================================\
+\
+1) How do I introduce more training data?\
+\
+In lines 52-62 in the \'93xlnet_grains_unrelated.py\'94 model training script is an example of how I incorporate the grains_formatted.csv file into the training data. It\'92s just a matter of appending the additional abstracts and labels to the variables 
+\f2\i abstracts 
+\f0\i0 and 
+\f2\i labels
+\f0\i0 . Make sure the new data is in the same directory as the other training data files. \
+}

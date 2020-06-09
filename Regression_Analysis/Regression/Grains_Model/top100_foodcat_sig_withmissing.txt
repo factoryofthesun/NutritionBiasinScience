@@ -1,0 +1,8 @@
+"Food.Code5:Is_Industry_Top1001"
+"Food.Code21:Is_Industry_Top1001"
+"Food.Code58:Is_Industry_Top1001"
+"Food.Code77:Is_Industry_Top1001"
+"Food.Code104:Is_Industry_Top1001"
+"Food.Code107:Is_Industry_Top1001"
+"Food.Code108:Is_Industry_Top1001"
+"Food.Code150:Is_Industry_Top1001"

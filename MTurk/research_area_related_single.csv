@@ -1,0 +1,33 @@
+"","SC","Count_Total","Count_Unrelated_80Perc","Perc_Unrelated_80Perc","Count_Unrelated_All","Perc_Unrelated_All"
+"1","Genetics & Heredity",2,0,0,0,0
+"2","Behavioral Sciences",6,0,0,0,0
+"3","Sport Sciences",3,0,0,0,0
+"4","Physiology",1,0,0,0,0
+"5","Pediatrics",4,0,0,0,0
+"6","Science & Technology - Other Topics",1,0,0,0,0
+"7","Neurosciences & Neurology",1,0,0,0,0
+"8","Gastroenterology & Hepatology",1,0,0,0,0
+"9","Education & Educational Research",1,0,0,0,0
+"10","Endocrinology & Metabolism",14,1,0.0714285714285714,0,0
+"11","Oncology",8,1,0.125,0,0
+"12","Cardiovascular System & Cardiology",4,1,0.25,0,0
+"13","Plant Sciences",25,7,0.28,2,0.08
+"14","Immunology",7,2,0.285714285714286,1,0.142857142857143
+"15","Nutrition & Dietetics",843,244,0.28944246737841,146,0.173190984578885
+"16","Pharmacology & Pharmacy",30,10,0.333333333333333,5,0.166666666666667
+"17","Microscopy",3,1,0.333333333333333,1,0.333333333333333
+"18","Public, Environmental & Occupational Health",7,3,0.428571428571429,2,0.285714285714286
+"19","Biochemistry & Molecular Biology",134,62,0.462686567164179,41,0.305970149253731
+"20","Toxicology",145,85,0.586206896551724,41,0.282758620689655
+"21","Chemistry",1672,1012,0.605263157894737,668,0.399521531100478
+"22","Microbiology",64,39,0.609375,21,0.328125
+"23","Food Science & Technology",4460,2734,0.613004484304933,1753,0.39304932735426
+"24","Agriculture",852,527,0.618544600938967,333,0.390845070422535
+"25","Mycology",30,21,0.7,9,0.3
+"26","Developmental Biology",4,3,0.75,2,0.5
+"27","Zoology",4,3,0.75,2,0.5
+"28","Reproductive Biology",4,3,0.75,2,0.5
+"29","Biotechnology & Applied Microbiology",199,151,0.758793969849246,101,0.507537688442211
+"30","Engineering",130,109,0.838461538461538,77,0.592307692307692
+"31","Business & Economics",24,22,0.916666666666667,15,0.625
+"32","Spectroscopy",8,8,1,6,0.75
