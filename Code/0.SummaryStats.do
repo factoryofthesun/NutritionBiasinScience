@@ -34,7 +34,8 @@ drop if de_clean == ""
 
 egen de_group = group(de_clean)
 
-    *Stat1: Are there keywords where there is NO non-industry article? ALmost never----------
+*Paste onto Summary Stats Ind vs Non Ind-------------------------------------------------
+*Stat1: Are there keywords where there is NO non-industry article? ALmost never----------
 forvalues i = 1(1)8 {
 *forvalues i = 11(1)22 {
     preserve
@@ -67,16 +68,70 @@ forvalues i = 1(1)8 {
     restore
 }
     
+*Stat3: What are the top 10 keywords in that foodcode?----------------------
+forvalues i = 1(1)8 {
+*forvalues i = 11(1)22 {
+    preserve
+    *keep if foodcode == `i'
+    keep if foodcode == `i' & strpos(lower(sc),"nutrition")
+
+    bysort de_clean: gen count=_N
     
-    *What are the top 10 keywords in that foodcode?----------------------
-    *bysort de_clean: keep if _n==1
-    *gsort -count
-    *list de_clean count if _n<=10
+    bysort de_clean: keep if _n==1
+    gsort -count
+    list de_clean count if _n<=10
     
-    *Are industry funded articles in certain keywords?--------------------
-    *foreach var in "amaranth" "amaranth proteins" "amaranth flour" "antioxidant activity" "rheology" "starch" "functional properties" "amaranth oil" "germination" "grain amaranth" {
-     foreach var in "barley" "beta glucan" "malt" "malting" "starch" "germination" "malting quality" "hull less barley" "antioxidant activity" "beta glucans" {
-		*foreach var in "resitant starch" "anthocyanins" "biofortification" "antioxidant activity" {
+    restore
+}
+
+*Stat4: Are industry funded articles in certain keywords?--------------------
+*Use top 10 keywords obtained from Stat3 for this regression:
+forvalues i = 1(1)8 {
+*forvalues i = 11(1)22 {
+    preserve
+    keep if foodcode == `i'
+    
+    *For estimation, focus on top 10 AND >40 count AND not name of cereal grain. Ignore amaranth
+
+    ***foreach var in "amaranth" "amaranth proteins" "amaranth flour" "antioxidant activity" "rheology" "starch" "functional properties" "amaranth oil" "germination" "grain amaranth" {
+    *foodcode 2
+    if (`i' == 2) {
+    local grain ""beta glucan" "malt" "malting" "starch" "germination" "malting quality" "hull less barley" "antioxidant activity" "beta glucans""
+    }
+    if (`i' == 3) {
+    local grain ""tartary buckwheat" "rutin" "antioxidant activity" "flavonoids""
+    }
+    if (`i' == 5) {
+    local grain ""starch" "corn starch" "extrusion" "fumonisins" "mycotoxins" "corn oil" "corn silage""
+     }
+     foreach var of local grain {
+        disp("`i'")
+        disp "`var'"
+      	gen dep_var = (de_clean == "`var'")
+		  	reg dep_var ind_code
+		  	drop dep_var
+     }
+
+
+     *foodcode 13
+     if (`i' == 13) {
+     foreach var in "beta glucan" "oat bran" "oat beta glucan" {
+     }
+     *foodcode 15
+     if (`i' == 15) {
+     foreach var in "rice bran" "rice starch" "brown rice" "rice bran oil" "antioxidant activity" "rice flour" "starch" "texture" {
+     }
+     *foodcode 17
+     if (`i' == 17) {
+     foreach var in "fermentation"  {
+     }
+     *foodcode 21
+     if (`i' == 21) {
+     foreach var in "wheat flour" "bread" "wheat bran" "gluten" "rheology" "starch" "deoxynivalenol" "wheat gluten" {
+     }
+ 		 *foreach var in "resitant starch" "anthocyanins" "biofortification" "antioxidant activity" {
+ 		  disp("`i'")
+ 		  disp("`var'")
 		 	gen dep_var = (de_clean == "`var'")
 		  reg dep_var ind_code
 		  drop dep_var
