@@ -23,12 +23,13 @@ extract_name <- function(i){
 
 ind_tag_df$Suff_Company <- sapply(1:nrow(ind_tag_df), extract_name)
 
-#Strip whitespaces from top100 and US/UK companies match 
+#Strip whitespaces from all match columns 
 ind_tag_df$Top100_Match <- trimws(as.character(ind_tag_df$Top100_Match))
 ind_tag_df$US_Match <- trimws(as.character(ind_tag_df$US_Match))
 ind_tag_df$UK_Match <- trimws(as.character(ind_tag_df$UK_Match))
 ind_tag_df$Suff_Company <- trimws(as.character(ind_tag_df$Suff_Company))
-ind_tag_df$Manual_Match <- trimws(as.character(ind_tag_df$Manual_Match))
+ind_tag_df$Google_Match <- trimws(as.character(ind_tag_df$Google_Match))
+ind_tag_df$Boards <- trimws(as.character(ind_tag_df$Boards))
 
 # Remove excluded company names or anything containing 'university'
 exclude_suffix_extraction <- c('brazilian', 'breeding', 'center for food', 'research', 'the', 'lebanese', 'north carolina', 'global',
@@ -49,10 +50,11 @@ ind_tag_df$Companies <- ind_tag_df$Top100_Match
 ind_tag_df$Companies[ind_tag_df$Companies == ""] <- ind_tag_df[ind_tag_df$Companies == "", "US_Match"]
 ind_tag_df$Companies[ind_tag_df$Companies == ""] <- ind_tag_df[ind_tag_df$Companies == "", "UK_Match"]
 ind_tag_df$Companies[ind_tag_df$Companies == ""] <- ind_tag_df[ind_tag_df$Companies == "", "Suff_Company"]
-ind_tag_df$Companies[ind_tag_df$Companies == ""] <- ind_tag_df[ind_tag_df$Companies == "", "Manual_Match"]
+ind_tag_df$Companies[ind_tag_df$Companies == ""] <- ind_tag_df[ind_tag_df$Companies == "", "Google_Match"]
 
 # Wipe industry label for points in which no company name extracted 
-ind_tag_df$Is_Industry[ind_tag_df$Companies == "" | is.na(ind_tag_df$Companies)] <- 0 
+ind_tag_df$Is_Industry[(ind_tag_df$Companies == "" | is.na(ind_tag_df$Companies)) & 
+                         ind_tag_df$Boards == "" | is.na(ind_tag_df$Boards)] <- 0 
 
 #Consolidate known conglomerates 
 ind_tag_df$Companies[grepl("coca", ind_tag_df$Companies, fixed = TRUE)] <- "coca cola" 
@@ -76,7 +78,7 @@ ind_tag_df$Companies[grepl("danone", ind_tag_df$Companies, fixed = TRUE)] <- "da
 ind_tag_df$Companies[grepl("suntory", ind_tag_df$Companies, fixed = TRUE)] <- "suntory" 
 ind_tag_df$Companies[grepl("kellog", ind_tag_df$Companies, fixed = TRUE)] <- "kellog" 
 
-ind_tag_v4 <- setDT(ind_tag_df[,c(1:15, 86:87, 16:85)])
+ind_tag_v4 <- setDT(ind_tag_df[,c(1:16, 88:89, 17:87)])
 
 # Funding index within abstract groups 
 write.csv(ind_tag_v4, file="Temp/wos_suff_indtagged_long.csv", row.names=FALSE) #Export 

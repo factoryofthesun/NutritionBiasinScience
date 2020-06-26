@@ -35,8 +35,9 @@ outputs_dir = "/Volumes/GoogleDrive/My Drive/Nutrition_BiasInScience/WebOfScienc
 
 # ============= Read in data  =================
 final_cols = ['Funding.Code','Abstract.Code', 'Food.Code', 'Food.Name', 'Is_Industry_Suf', 'Is_Industry_US', 'Is_Industry_UK',
-        'Is_Industry_Top100', 'Is_Industry_Suf_Company', 'Is_Industry_Manual','Is_Industry_B2C','Is_Industry', 'Suffix_Match', 'US_Match', 'UK_Match',
-         'Top100_Match', 'Manual_Match', 'Suff_Company', 'Companies','FU_stripped_lower', 'FU_stripped_upper', 'FU','PT',
+        'Is_Industry_Top100', 'Is_Industry_Suf_Company', 'Is_Industry_Googled', 'Is_Industry_Board',
+        'Is_Industry_B2C','Is_Industry', 'Suffix_Match', 'US_Match', 'UK_Match', 'Top100_Match',
+        'Google_Match', 'Suff_Company', 'Companies', 'Boards','FU_stripped_lower', 'FU_stripped_upper', 'FU','PT',
        'AU', 'BA', 'BE', 'GP', 'AF', 'BF', 'CA', 'TI', 'SO', 'SE', 'BS', 'LA',
        'DT', 'CT', 'CY', 'CL', 'SP', 'HO', 'DE', 'ID', 'AB', 'C1', 'RP', 'EM',
        'RI', 'OI', 'FX', 'CR', 'NR', 'TC', 'Z9', 'U1', 'U2', 'PU', 'PI',
@@ -79,7 +80,7 @@ wos_indtagged.fillna("", inplace=True)
 
 # Replace company match with shortest string
 def get_shortest_string(row):
-    tmp = row[["Top100_Match", "US_Match", "UK_Match", "Manual_Match", "Suff_Company", 'Companies']]
+    tmp = row[["Top100_Match", "US_Match", "UK_Match", "Google_Match", "Suff_Company", 'Companies']]
     tmp[tmp==""] = np.nan
     min_index = tmp.map(len, na_action='ignore').idxmin()
     if not pd.isnull(min_index):
@@ -103,7 +104,8 @@ wos_indtagged = wos_indtagged[final_cols]
 wos_indtagged.to_csv(f'{outputs_dir}wos_indtagged_final_long_v1.csv', index=False)
 
 new_tagged = len(wos_indtagged.loc[(wos_indtagged['Is_Industry_Suf_Company'] == 1) & \
-                                (wos_indtagged['Is_Industry_Manual'] != 1) & \
+                                (wos_indtagged['Is_Industry_Board'] != 1) & \
+                                (wos_indtagged['Is_Industry_Googled'] != 1) & \
                                 (wos_indtagged['Is_Industry_Suf'] != 1) & \
                                 (wos_indtagged['Is_Industry_UK'] != 1) & \
                                 (wos_indtagged['Is_Industry_US'] != 1) & \
@@ -113,7 +115,7 @@ print(f"Searching on company names extracted from suffix search yields {new_tagg
 
 overwrite = False
 with open(f'{outputs_dir}counts_each_search.txt', 'a+') as f:
-    if len(f.readlines()) < 6:
+    if len(f.readlines()) < 7:
         f.write(f"Searching on company names extracted from suffix search finds {new_tagged} new matches.\n")
     else:
         overwrite = True
@@ -121,14 +123,15 @@ with open(f'{outputs_dir}counts_each_search.txt', 'a+') as f:
 f.close()
 
 if overwrite:
-    data[5] = f"Searching on company names extracted from suffix search finds {new_tagged} new matches.\n"
+    data[6] = f"Searching on company names extracted from suffix search finds {new_tagged} new matches.\n"
     with open(f'{outputs_dir}counts_each_search.txt', 'w') as f:
         f.writelines(data)
     f.close()
 
 # Save list of most frequent new company tags
 new_names = wos_indtagged.loc[(wos_indtagged['Is_Industry_Suf_Company'] == 1) & \
-                                (wos_indtagged['Is_Industry_Manual'] != 1) & \
+                                (wos_indtagged['Is_Industry_Board']) & \
+                                (wos_indtagged['Is_Industry_Googled'] != 1) & \
                                 (wos_indtagged['Is_Industry_Suf'] != 1) & \
                                 (wos_indtagged['Is_Industry_UK'] != 1) & \
                                 (wos_indtagged['Is_Industry_US'] != 1) & \
@@ -140,17 +143,17 @@ new_names_agg.to_csv(f'{temp_dir}suff_company_freqs.csv')
 # ============= Save abstract-collapsed dataframe =================
 industry_aggs = [(ind_col, "max") for ind_col in wos_indtagged.columns if "Is_Industry" in ind_col]
 match_aggs = [(match_col, lambda x: '' if (x=="").all() else '; '.join(x)) for match_col in wos_indtagged.columns if "Match" in match_col]
-company_aggs = [(comp_col, lambda x: '' if (x=="").all() else '; '.join(x)) for comp_col in wos_indtagged.columns if "Companies" in comp_col or "Suff_Company" in comp_col]
+company_aggs = [(comp_col, lambda x: '' if (x=="").all() else '; '.join(x)) for comp_col in ["Companies", "Suff_Company", 'Boards']]
 fu_aggs = [(col, '; '.join) for col in wos_indtagged.columns if "FU" in col]
 remainder_aggs = [(col, 'first') for col in wos_indtagged.columns if "Is_Industry" not in col and "Match" not in col \
-                                                                and "Companies" not in col and 'FU' not in col and "Suff_Company" not in col]
+                                                                and 'FU' not in col and col not in ["Companies", "Suff_Company", 'Boards']]
 aggs = dict(industry_aggs + match_aggs + company_aggs + fu_aggs + remainder_aggs)
 
 wos_wide = wos_indtagged.groupby("Abstract.Code").agg(aggs)
 
 # Remove empty semicolons
-wos_wide.loc[:,"Suffix_Match":"Companies"].replace(r'(; )\1{1,}', r"\1",inplace=True, regex=True)
-wos_wide.loc[:,"Suffix_Match":"Companies"] = wos_wide.loc[:,"Suffix_Match":"Companies"].apply(lambda x: x.str.strip('; '))
+wos_wide.loc[:,"Suffix_Match":"Boards"].replace(r'(; )\1{1,}', r"\1",inplace=True, regex=True)
+wos_wide.loc[:,"Suffix_Match":"Boards"] = wos_wide.loc[:,"Suffix_Match":"Boards"].apply(lambda x: x.str.strip('; '))
 
 final_cols.remove("Funding.Code")
 wos_wide = wos_wide[final_cols]

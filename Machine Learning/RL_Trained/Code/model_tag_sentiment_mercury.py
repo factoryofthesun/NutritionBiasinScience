@@ -30,7 +30,7 @@ max_len = 128
 # Use the currently best performing model to tag abstract senetiment
 from pathlib import Path
 model_path = str(Path(__file__).parent / "models")
-best_model_name = "/AdamW_dp0.3_sdp0.1_bsize128.pt"
+best_model_name = "/grains_original_AdamW_dp0.3_sdp0.1_bsize128.pt"
 model = XLNetForSequenceClassification.from_pretrained("xlnet-base-cased",
                                                       num_labels = 2,
                                                       dropout = 0.3,
@@ -45,12 +45,25 @@ tokenizer = XLNetTokenizer.from_pretrained('xlnet-base-cased', do_lower_case=Tru
 # Read in data
 data_path = str(Path(__file__).parent / "../Data")
 
-abstracts_data = pd.read_csv(data_path + "/wos_indtagged_final.csv")
+abstracts_data = pd.read_csv(data_path + "/wos_indtagged_final_wide.csv")
 print("Removing {} samples with no abstract data...".format(sum(abstracts_data['AB'].isna())))
 abstracts_data = abstracts_data[abstracts_data['AB'].notna()] # Remove rows without abstract data
 abstracts_data = abstracts_data[abstracts_data['AB'] != "AB"] # Also remove rows that duplicate the header
+
+print("Original abstracts count:", len(abstracts_data['AB']))
+# Remove abstracts that have already been MTurk labelled
+labelled_df = pd.read_csv(f"{data_path}/labelled_with_codes.csv")
+
+print("Abstracts to remove:", len(labelled_df))
+
+# Keep labelled samples to append later
+labelled_df['Prob_NotPositive'] = (labelled_df['Prediction'] == 0).astype(int)
+labelled_df['Prob_Positive'] = (labelled_df['Prediction'] == 1).astype(int)
+
+abstracts_data = abstracts_data[~abstracts_data['Abstract.Code'].isin(labelled_df['Abstract.Code'].tolist())]
+
 abstracts = abstracts_data['AB'].tolist()
-print("Inputs count: {}".format(len(abstracts)))
+print("Final inputs count: {}".format(len(abstracts)))
 
 # Preprocess
 encodings_tensor, attention_masks_tensor = preProcess(max_len, tokenizer, abstracts)
@@ -86,10 +99,15 @@ for step, batch in enumerate(dataloader):
             print("Preds:",preds)
 
 print("Total inference took " + str(datetime.timedelta(seconds=int(round(time.time()-t0)))))
-# Output asbtracts, probabilities, and predictions as dataframe
+
+# Output abstracts, probabilities, and predictions as dataframe
+
 # Save abstract code for easy merging with features later
 preds_df = pd.DataFrame({"Abstract.Code": abstracts_data['Abstract.Code'],"Food.Code":abstracts_data['Food.Code'],
                         "Food.Name":abstracts_data['Food.Name'], "Abstract": abstracts, "Prob_NotPositive": probs_nonpos_full,
                         "Prob_Positive": probs_pos_full, "Prediction": preds_full})
 
-preds_df.to_csv(data_path + "/full_predictions_AdamW.csv", index = False)
+# Add back in sampled labels
+preds_df = pd.concat([preds_df, labelled_df], ignore_index=True)
+
+preds_df.to_csv(data_path + "/full_predictions_AdamW_grains.csv", index = False)

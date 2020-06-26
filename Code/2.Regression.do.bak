@@ -1,8 +1,9 @@
+cd "D:\GoogleDrive"
 **************************************************************************************
 *#Step 2.Read in industry tagged names for funding agencies*********************************
 *#Source: Industry_tagging/Outputs
 clear
-import delimited "G:\My Drive\Nutrition_BiasInScience\WebOfScience\Industry_Tagging\Outputs\wos_indtagged_final_wide.csv", delimiters(",") varnames(1)
+import delimited "Nutrition_BiasInScience\WebOfScience\Industry_Tagging\Outputs\wos_indtagged_final_wide_v1.csv", delimiters(",") varnames(1)
 
 keep if foodname == "TI = (oats or oatmeal)"
 
@@ -11,7 +12,11 @@ gen AB_clean = ustrregexra(ab,`"[^a-zA-Z0-9]"',"")
 gen AB_trunc = substr(AB_clean, 1,200)
 sort AB_trunc
 *There should be NO _merge=2
-merge m:1 AB_trunc using "G:\My Drive\Nutrition_BiasInScience\WebOfScience\1.Oats\Batch_3892571_batch_results_reshaped"
+merge m:1 AB_trunc using "Nutrition_BiasInScience\WebOfScience\1.Oats\Batch_3892571_batch_results_reshaped"
+keep if _merge==3
+destring foodcode is_industry_b2c, replace
+
+save "Nutrition_BiasInScience\MTurk\oats_batch_results_indtagged"
 
 *Industry-funded or not?*********************************
 gen ind_code = 1 if companies ~=""
@@ -60,7 +65,10 @@ reg avg_unrelatedmissing  ind_code if !missing(ab)
 tab ind_code
 tab ind_code if !missing(ab)
 
-tab companies
+*clear
+*import delimited "D:\GoogleDrive\Nutrition_BiasInScience\WebOfScience\Industry_Tagging\Outputs\wos_indtagged_final_long_v1.csv", delimiters(",") varnames(1)
+*keep if foodname == "TI = (oats or oatmeal)"
+*tab companies
 
 #Number of positive vs non-positive articles by various sub-groups
 tab positive1 if !missing(ab)
@@ -69,20 +77,20 @@ tab positive1 if !missing(ab) & ind_code==1
 tab majority_2 if !missing(ab)
 tab majority_2 if !missing(ab) & ind_code==1
 
-summ avg if !missing(ab), detail
-summ avg if !missing(ab) & ind_code==1, detail
+summ avg_unrelated0 if !missing(ab), detail
+summ avg_unrelated0 if !missing(ab) & ind_code==1, detail
 
 
 **************************************************************************************
 *********NEWS PAPER MENTIONS VS CITATIONS FOR OATS********
 **************************************************************************************
-xls2dta, save("G:\My Drive\Nutrition_BiasInScience\WebOfScience\Factiva_Data"): import excel "G:\My Drive\Nutrition_BiasInScience\WebOfScience\Factiva_Data\13.xlsx", sheet("Sheet1") firstrow clear
+xls2dta, save("D:\GoogleDrive\Nutrition_BiasInScience\WebOfScience\Factiva_Data"): import excel "D:\GoogleDrive\Nutrition_BiasInScience\WebOfScience\Factiva_Data\13.xlsx", sheet("Sheet1") firstrow clear
 xls2dta: xeq rename search_terms ti
 xls2dta: xeq rename number_of_results news_mentions
 xls2dta: xeq bysort ti: keep if _n==1
 
 drop _merge
-merge m:1 ti using "G:\My Drive\Nutrition_BiasInScience\WebOfScience\Factiva_Data\13"
+merge m:1 ti using "D:\GoogleDrive\Nutrition_BiasInScience\WebOfScience\Factiva_Data\13"
 list ti if _merge==1
 list ti if _merge==2
 drop if _merge==2
@@ -92,8 +100,8 @@ drop _merge
 *drop if news_mentions>50 & news_mentions~=.
 *Exclude outlier news mentions, happens with books or titles like "Oat"
 *Exclude those with missing abstracts, to be consistent with positive/negative analysis
-ttest news_mentions if !missing(ab) & !(news_mentions>50 & news_mentions~=.), by(ind_code)
-ttest news_mentions if !(news_mentions>50 & news_mentions~=.), by(ind_code)
+*ttest news_mentions if !missing(ab) & !(news_mentions>50 & news_mentions~=.), by(ind_code)
+*ttest news_mentions if !(news_mentions>50 & news_mentions~=.), by(ind_code)
 
 *0-1 coding to see if it gets a news mention or not, not the intensity of it
 gen news_mentions_01 = (news_mentions>0 & news_mentions~=. & news_mentions<=50)
@@ -102,6 +110,8 @@ reg news_mentions_01 ind_code if !missing(ab) &  !(news_mentions>50 & news_menti
 
 reg news_mentions ind_code if !missing(ab) &  !(news_mentions>50 & news_mentions~=.)
 
+destring tc, replace
+reg tc ind_code if !(missing(ab))
 
 **************************************************************************************
 *********CHECK: WHAT HAPPENS IF WE DO 100% IND, 10% NON-IND SAMPLE********

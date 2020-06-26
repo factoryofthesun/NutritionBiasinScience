@@ -5,7 +5,7 @@ library(data.table)
 library(stringr)
 setwd("/Volumes/GoogleDrive/My Drive/Nutrition_BiasInScience/WebOfScience/Industry_Tagging")
 
-ind_tag_df <- read.csv('Outputs/wos_indtagged_final_long.csv')
+ind_tag_df <- read.csv('Outputs/wos_indtagged_final_long_v1.csv')
 
 #Industry Funded Article Counts 
 sum(ind_tag_df$Is_Industry == 1) #Total counts 
@@ -37,7 +37,7 @@ write.table(oats_freq_table, "Outputs/oats_industry_freq.txt", row.names = FALSE
 
 #Industry counts grouped by food category 
 #Use the wide dataframe here to get accurate per-abstract counts 
-ind_tag_wide <- read.csv('Outputs/wos_indtagged_final_wide.csv')
+ind_tag_wide <- read.csv('Outputs/wos_indtagged_final_wide_v1.csv')
 
 ind_tag_wide$Non_Missing_Funding <- ind_tag_wide$FU_stripped_lower != " missing "
 ind_tag_wide$Non_Missing_Abstracts <- ind_tag_wide$AB != ""
@@ -45,8 +45,8 @@ ind_tag_wide$Non_Missing_Abstracts <- ind_tag_wide$AB != ""
 foodcat_ind_freq <- ind_tag_wide %>% group_by(Food.Code, Food.Name) %>%
   summarise(total_raw = n(), total_abstracts = sum(Non_Missing_Abstracts), total_funding = sum(Non_Missing_Funding), 
             industry_suffix = sum(Is_Industry_Suf), industry_top100 = sum(Is_Industry_Top100), industry_b2c = sum(Is_Industry_B2C), 
-            industry_suff_company = sum(Is_Industry_Suf_Company), industry_manual = sum(Is_Industry_Manual), 
-            industry_us = sum(Is_Industry_US) , industry_total = sum(Is_Industry))
+            industry_suff_company = sum(Is_Industry_Suf_Company), industry_google = sum(Is_Industry_Googled), 
+            industry_us = sum(Is_Industry_US), industry_board=sum(Is_Industry_Board) , industry_total = sum(Is_Industry))
 
 #Top Five Industry Names for each food group 
 foodcat_ind <- subset(ind_tag_df, ind_tag_df$Companies != "")
@@ -73,8 +73,23 @@ topfive_wide_b2c <- pivot_wider(foodcat_b2c_topfive, names_from=freq_rank,
                             values_from=c(Companies, counts))
 colnames(topfive_wide_b2c) <- c(colnames(topfive_wide_b2c[1:2]), paste("B2C", colnames(topfive_wide_b2c)[3:12], sep="_")) # Change column names to distinguish B2C tag 
 
+# Top Five Boards for each food group 
+foodcat_board <- subset(ind_tag_df, ind_tag_df$Is_Industry_Board == 1)
+foodcat_board <- foodcat_board[, c("Food.Code", "Food.Name", "Boards")]
+foodcat_board_topfive <- foodcat_board %>% group_by(Food.Code, Food.Name, Boards) %>% 
+  summarise(counts = n()) %>% top_n(n = 5, wt = counts) %>% arrange(Food.Code, desc(counts)) %>%
+  do(head(., 5)) %>% mutate(freq_rank = 1:n()) 
+write.table(foodcat_board_topfive, "Outputs/topfive_byfood_board.txt", row.name = FALSE)
+
+#Pivot to wide format 
+topfive_wide_board <- pivot_wider(foodcat_board_topfive, names_from=freq_rank, 
+                                values_from=c(Boards, counts))
+colnames(topfive_wide_board) <- c(colnames(topfive_wide_board[1:7]), paste("Board", colnames(topfive_wide_board)[8:12], sep="_")) 
+
 #Append to total food cat dataframe 
 foodcat_tot <- merge(foodcat_ind_freq, topfive_wide[-2], by = "Food.Code", all.x = TRUE)
 foodcat_tot <- merge(foodcat_tot, topfive_wide_b2c[-2], by = 'Food.Code', all.x = TRUE)
-  
+foodcat_tot <- merge(foodcat_tot, topfive_wide_board[-2], by = 'Food.Code', all.x = TRUE)
+
+
 write.csv(foodcat_tot, "Outputs/Food Category Summary Statistics_v5.csv", row.names= FALSE)  

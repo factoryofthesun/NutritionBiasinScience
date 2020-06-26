@@ -15,11 +15,11 @@ pred_dt <- setDT(full_predictions)
 pred_dt <- na.omit(pred_dt) # Remove faulty na data 
 pred_dt <- pred_dt[,c("Abstract.Code", "Prob_NotPositive", "Prob_Positive", "Prediction")]
   
-wos_indtagged <- read.csv("../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide.csv")
+wos_indtagged <- read.csv("../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide_FEclean.csv")
 wos_indtagged <- setDT(wos_indtagged)
 
 # Summary statistics data
-summ_stats <- setDT(read.csv("../WebOfScience/Industry_Tagging/Outputs/Food Category Summary Statistics_v4.csv"))
+summ_stats <- setDT(read.csv("../WebOfScience/Industry_Tagging/Outputs/Food Category Summary Statistics_v5.csv"))
 summ_stats_nomiss <- rbind(summ_stats[!(Food.Code %in% c(134,166))],summ_stats[!(Food.Code %in% c(134,166))])
 summ_stats_withmiss <- rbind(summ_stats, summ_stats)
 
@@ -59,7 +59,8 @@ industry_sentiment_top100_summary <- full_reg_df[,.(Counts=log(.N)),by=list(Top1
 # Save a separate regression data file that includes the article title + first 20 words 
 # The raw text is included so it can be matched on the raw data files in the future 
 industry_with_text <- wos_indtagged[,c("Abstract.Code","Food.Code", "AB", "TI","Food.Name","Is_Industry", "Is_Industry_Top100",
-                                       "Industry_Labels", "Top100_Industry_Labels", "SO"), with=FALSE]
+                                       "Industry_Labels", "Top100_Industry_Labels", "Journal", "Pub_Year", "Keywords"), with=FALSE]
+colnames(industry_with_text)[4] <- c("Title")
 industry_with_text$AB <- substr(industry_with_text$AB, 1,200) # First 200 characters of AB
 reg_data <- merge(industry_with_text, pred_dt, by="Abstract.Code", all.y = TRUE)
 write.csv(reg_data, "regression_data.csv", row.names=FALSE)

@@ -11,9 +11,10 @@ library(data.table)
 library(stringr)
 library(gridExtra)
 library(ggplot2)
+library(chisq.posthoc.test)
 setwd("/Volumes/GoogleDrive/.shortcut-targets-by-id/0B0efpUDNVRiVME9hOFNHaU1xVW8/Nutrition_BiasInScience/Regression_Analysis")
 
-wos_data <- setDT(read.csv("../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide.csv"))
+wos_data <- setDT(read.csv("../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide_v1.csv"))
 wos_data$Funding_Missing <- (wos_data$FU_stripped_lower == ' missing ')
 wos_data$Pub_Year <- str_extract(wos_data$PY, "\\d+") # Extract numeric values from publication year column 
 wos_data$PD <- str_extract(wos_data$PD, "\\d+")
@@ -26,8 +27,22 @@ wos_data[is.na(PD), PD := 0]
 wos_data[is.na(EA), EA := 0]
 wos_data[is.na(Pub_Year) | (Pub_Year > 0 & Pub_Year < 1000), Pub_Year := pmax(PD, EA, na.rm = TRUE)]
 
+# Group together the different editions/volumes of the same journal 
+wos_data$Journal <- gsub(", VOL[^,]*", "", wos_data$SO)
+wos_data$Journal <- gsub(",[^,]+EDITION", "", wos_data$Journal)
+wos_data$Journal <- trimws(wos_data$Journal)
+
+# Save version of wos file with cleaned publiation year and keywords
+wos_data[is.na(DE) | DE == "", DE := ID]
+wos_data$Keywords <- trimws(gsub('[^[[:space:]]\\-;a-z0-9]', '', tolower(wos_data$DE)))
+  
+write.csv(wos_data, "../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide_FEclean.csv", row.names=F)
+
+# ^^^^^^^^^ MOVE ALL OF THE ABOVE TO A DIFFERENT FILE LOL ^^^^^^^^^^^^
+
 nrow(wos_data[Pub_Year < 1800]) # Remove all publication years before 1800 (data error)
 wos_data <- wos_data[Pub_Year >= 1800]
+
 
 wos_funding_grouped <- wos_data[,.(Counts = .N), by = list(Pub_Year, Funding_Missing)]
 wos_funding_grouped <- wos_funding_grouped[, Perc := Counts/sum(Counts), by=Funding_Missing]
@@ -53,8 +68,12 @@ colnames(wos_industry_final) <- c("Publication Year", "Non_Ind", "Ind", "Missing
 wos_industry_final[is.na(wos_industry_final)] <- 0
 write.xlsx(wos_industry_final, "Distribution_Analysis/pub_year.xlsx", row.names=F)
 
-# Run pairwise Wilcox rank sum test 
-kruskal.test(Pub_Year ~ Is_Industry, data=wos_data_newind)
-pairwise.wilcox.test(wos_data_newind$Pub_Year, wos_data_newind$Is_Industry, p.adjust.method = "BH")
+# Statistical test: chi-square for multiple groups and outcomes (>=2008)
+wos_for_chisq <- wos_industry_final[wos_industry_final$`Publication Year` >= 2008,]
+row.names(wos_for_chisq) <- wos_for_chisq$`Publication Year`
+wos_for_chisq$`Publication Year` <- NULL
+chisq.test(wos_for_chisq)
 
+# Post-hoc test: 
+residuals_posthoc <- chisq.posthoc.test(wos_for_chisq)
 

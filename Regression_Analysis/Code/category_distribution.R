@@ -11,7 +11,7 @@ library(stringr)
 library(gridExtra)
 setwd("/Volumes/GoogleDrive/.shortcut-targets-by-id/0B0efpUDNVRiVME9hOFNHaU1xVW8/Nutrition_BiasInScience/Regression_Analysis")
 
-abstract_dt <- setDT(read.csv("../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide.csv"))
+abstract_dt <- setDT(read.csv("../WebOfScience/Industry_Tagging/Outputs/wos_indtagged_final_wide_v1.csv"))
 abstract_dt[FU_stripped_lower == " missing ", Is_Industry := 2]
 abstract_sc_grouped <- abstract_dt[,.(Counts=.N), by=list(SC,Is_Industry)]
 abstract_sc_wide <- dcast(abstract_sc_grouped, SC ~ Is_Industry, value.var="Counts")
